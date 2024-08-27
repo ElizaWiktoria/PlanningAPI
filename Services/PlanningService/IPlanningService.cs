@@ -6,13 +6,13 @@ namespace PlanningAPI.Services.PlanningService
 {
     public interface IPlanningService
     {
-        IEnumerable<Routine> GetAllRoutines();
-        Routine CreateRoutine(CreateRoutineDto createRoutineDto);
-        string CompleteRoutine(int id);
-        bool DeleteRoutine(int id);
-        Routine ModifyRoutine(ModifyRoutineDto modifyRoutine);
-        Plan CreatePlan(CreatePlanDto createPlan);
-        IEnumerable<Plan> GetPlans();
-        bool DeletePlan(int id);
+        IEnumerable<RoutineDto> GetAllRoutines();
+        RoutineDto CreateRoutine(CreateRoutineDto createRoutineDto);
+        DateOnly CompleteRoutine(int id);
+        void DeleteRoutine(int id);
+        RoutineDto ModifyRoutine(ModifyRoutineDto modifyRoutine);
+        PlanDto CreatePlan(CreatePlanDto createPlan);
+        IEnumerable<PlanDto> GetPlans();
+        void DeletePlan(int id);
     }
 }

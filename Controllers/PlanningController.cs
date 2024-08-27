@@ -22,7 +22,7 @@ namespace PlanningAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetRoutines")]
-        public IEnumerable<Routine> GetAllRoutines()
+        public IEnumerable<RoutineDto> GetAllRoutines()
             => _planningService.GetAllRoutines();
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace PlanningAPI.Controllers
         /// <param name="createRoutineDto"></param>
         /// <returns></returns>
         [HttpPost("CreateRoutine")]
-        public Routine CreateRoutine(CreateRoutineDto createRoutineDto)
+        public RoutineDto CreateRoutine(CreateRoutineDto createRoutineDto)
             => _planningService.CreateRoutine(createRoutineDto);
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace PlanningAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("CompleteRoutine")]
-        public string CompleteRoutine(int id)
+        public DateOnly CompleteRoutine(int id)
             => _planningService.CompleteRoutine(id);
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace PlanningAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("DeleteRoutine")]
-        public bool DeleteRoutine(int id)
+        public void DeleteRoutine(int id)
             => _planningService.DeleteRoutine(id);
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace PlanningAPI.Controllers
         /// <param name="modifyRoutine"></param>
         /// <returns></returns>
         [HttpPut("ModifyRoutine")]
-        public Routine ModifyRoutine(ModifyRoutineDto modifyRoutine)
+        public RoutineDto ModifyRoutine(ModifyRoutineDto modifyRoutine)
             => _planningService.ModifyRoutine(modifyRoutine);
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace PlanningAPI.Controllers
         /// <param name="createPlan"></param>
         /// <returns></returns>
         [HttpPost("CreatePlan")]
-        public Plan CreatePlan(CreatePlanDto createPlan)
+        public PlanDto CreatePlan(CreatePlanDto createPlan)
             => _planningService.CreatePlan(createPlan);
 
 
@@ -76,7 +76,7 @@ namespace PlanningAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetPlans")]
-        public IEnumerable<Plan> GetPlans()
+        public IEnumerable<PlanDto> GetPlans()
             => _planningService.GetPlans();
 
 
@@ -86,7 +86,7 @@ namespace PlanningAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("DeletePlan")]
-        public bool DeletePlan(int id)
+        public void DeletePlan(int id)
             => _planningService.DeletePlan(id);
     }
 }

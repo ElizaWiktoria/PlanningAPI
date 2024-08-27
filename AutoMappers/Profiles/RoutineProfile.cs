@@ -8,8 +8,12 @@ namespace PlanningAPI.AutoMappers.Profiles
     {
         public RoutineProfile()
         {
-            CreateMap<CreateRoutineDto, Routine>();
-            CreateMap<string, DateOnly>().ConvertUsing(new StringToDateOnlyConverter());
+            CreateMap<CreateRoutineDto, Routine>()
+                .ReverseMap();
+            CreateMap<Routine, MinimalRoutine>()
+                .ReverseMap();
+            CreateMap<Routine, RoutineDto>()
+                .ReverseMap();
         }
     }
 }

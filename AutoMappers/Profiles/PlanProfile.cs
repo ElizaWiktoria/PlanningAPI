@@ -10,7 +10,12 @@ namespace PlanningAPI.AutoMappers.Profiles
         {
             CreateMap<CreatePlanDto, Plan>()
                 .ForMember(dest => dest.Routine, opt => opt.Ignore());
-            CreateMap<string, DateTime>().ConvertUsing(new StringToDateTimeConverter());
+
+            CreateMap<PlanDto, Plan>()
+                .ReverseMap();
+
+            CreateMap<Plan, MinimalPlan>()
+                .ReverseMap();
         }
     }
 }

@@ -15,26 +15,4 @@ namespace PlanningAPI.AutoMappers
             return config;
         }
     }
-
-    public class StringToDateOnlyConverter : ITypeConverter<string, DateOnly>
-    {
-        public DateOnly Convert(string source, DateOnly destination, ResolutionContext context)
-        {
-            return DateOnly.Parse(source);
-        }
-    }
-    public class DateOnlyToStringConverter : ITypeConverter<DateOnly, string>
-    {
-        public string Convert(DateOnly source, string destination, ResolutionContext context)
-        {
-            return source.ToString();
-        }
-    }
-    public class StringToDateTimeConverter : ITypeConverter<string, DateTime>
-    {
-        public DateTime Convert(string source, DateTime destination, ResolutionContext context)
-        {
-            return DateTime.Parse(source);
-        }
-    }
 }

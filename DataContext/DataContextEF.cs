@@ -12,7 +12,7 @@ namespace PlanningAPI.DataContext
         }
 
         public DbSet<Routine> Routines { get; set; }
-        public DbSet<Plan> Events { get; set; }
+        public DbSet<Plan> Plans { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

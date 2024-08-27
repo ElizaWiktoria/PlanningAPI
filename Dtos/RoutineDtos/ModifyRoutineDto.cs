@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string Name { get; set; } = "";
-        public string LastDone { get; set; } = DateTime.Now.ToString("yyyy-MM-dd");
+        public string LastDone { get; set; }
         public int FrequencyInDays { get; set; }
     }
 }

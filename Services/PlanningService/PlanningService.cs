@@ -3,6 +3,7 @@ using PlanningAPI.Dtos.PlanDtos;
 using PlanningAPI.Dtos.RoutineDtos;
 using PlanningAPI.Models;
 using PlanningAPI.UnitOfWork;
+using System.Numerics;
 
 namespace PlanningAPI.Services.PlanningService
 {
@@ -17,20 +18,25 @@ namespace PlanningAPI.Services.PlanningService
             _mapper = mapper;
         }
 
-        public IEnumerable<Routine> GetAllRoutines()
+        public IEnumerable<RoutineDto> GetAllRoutines()
         {
-            return _unitOfWork.RoutineRepository.GetRoutinesIncludingPlans();
+            var routines = _unitOfWork.RoutineRepository.GetRoutinesIncludingPlans();
+            var routinesDto = _mapper.Map<IEnumerable<Routine>, IEnumerable<RoutineDto>>(routines);
+
+            return routinesDto;
         }
 
-        public Routine CreateRoutine(CreateRoutineDto createRoutineDto)
+        public RoutineDto CreateRoutine(CreateRoutineDto createRoutineDto)
         {
             var routine = _mapper.Map<CreateRoutineDto, Routine>(createRoutineDto);
             _unitOfWork.RoutineRepository.Add(routine);
             _unitOfWork.RoutineRepository.SaveChanges();
-            return routine;
+
+            var routineDto = _mapper.Map<RoutineDto>(routine);
+            return routineDto;
         }
 
-        public string CompleteRoutine(int id)
+        public DateOnly CompleteRoutine(int id)
         {
             var routine = _unitOfWork.RoutineRepository.Get(x => x.Id == id);
             if (routine == null)
@@ -40,10 +46,10 @@ namespace PlanningAPI.Services.PlanningService
             routine.LastDone = today;
             _unitOfWork.RoutineRepository.SaveChanges();
 
-            return today.ToString("yyyy-MM-dd");
+            return today;
         }
 
-        public bool DeleteRoutine(int id)
+        public void DeleteRoutine(int id)
         {
             var routine = _unitOfWork.RoutineRepository.Get(x => x.Id == id);
             if (routine == null)
@@ -51,10 +57,10 @@ namespace PlanningAPI.Services.PlanningService
 
             _unitOfWork.RoutineRepository.Remove(routine);
             var isDeleted = _unitOfWork.RoutineRepository.SaveChanges();
-            return isDeleted;
+            return;
         }
 
-        public Routine ModifyRoutine(ModifyRoutineDto modifyRoutine)
+        public RoutineDto ModifyRoutine(ModifyRoutineDto modifyRoutine)
         {
             var routine = _unitOfWork.RoutineRepository.Get(x => x.Id == modifyRoutine.Id);
             if (routine == null)
@@ -65,10 +71,11 @@ namespace PlanningAPI.Services.PlanningService
             routine.LastDone = DateOnly.Parse(modifyRoutine.LastDone);
 
             _unitOfWork.RoutineRepository.SaveChanges();
-            return routine;
+            var routineDto = _mapper.Map<RoutineDto>(routine);
+            return routineDto;
         }
 
-        public Plan CreatePlan(CreatePlanDto createPlanDto)
+        public PlanDto CreatePlan(CreatePlanDto createPlanDto)
         {
             var plan = _mapper.Map<CreatePlanDto, Plan>(createPlanDto);
 
@@ -83,23 +90,27 @@ namespace PlanningAPI.Services.PlanningService
             _unitOfWork.PlanRepository.Add(plan);
             _unitOfWork.PlanRepository.SaveChanges();
 
-            return plan;
+            var planDto = _mapper.Map<Plan, PlanDto>(plan);
+
+            return planDto;
         }
 
-        public IEnumerable<Plan> GetPlans()
+        public IEnumerable<PlanDto> GetPlans()
         {
-            return _unitOfWork.PlanRepository.GetAll();
+            var plans = _unitOfWork.PlanRepository.GetPlansIncludingRoutine();
+            var plansDto = _mapper.Map<IEnumerable<Plan>, IEnumerable<PlanDto>>(plans);
+            return plansDto;
         }
 
-        public bool DeletePlan(int id)
+        public void DeletePlan(int id)
         {
             var plan = _unitOfWork.PlanRepository.Get(x => x.Id == id);
             if (plan == null)
                 throw new Exception("Plan of given id does not exist.");
 
             _unitOfWork.PlanRepository.Remove(plan);
-            var isDeleted = _unitOfWork.PlanRepository.SaveChanges();
-            return isDeleted;
+            _unitOfWork.PlanRepository.SaveChanges();
+            return;
         }
     }
 }
