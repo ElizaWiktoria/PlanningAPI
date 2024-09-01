@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PlanningAPI.Dtos.PlanDtos;
 using PlanningAPI.Dtos.RoutineDtos;
-using PlanningAPI.Models;
 using PlanningAPI.Services.PlanningService;
 
 namespace PlanningAPI.Controllers
@@ -21,63 +20,66 @@ namespace PlanningAPI.Controllers
         /// Get all routines
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetRoutines")]
-        public IEnumerable<RoutineDto> GetAllRoutines()
-            => _planningService.GetAllRoutines();
+        [HttpGet("routines")]
+        public async Task<IEnumerable<MinimalRoutine>> GetAllRoutinesAsync()
+            => await _planningService.GetAllRoutinesAsync();
 
         /// <summary>
         /// Create routine
         /// </summary>
         /// <param name="createRoutineDto"></param>
         /// <returns></returns>
-        [HttpPost("CreateRoutine")]
-        public RoutineDto CreateRoutine(CreateRoutineDto createRoutineDto)
-            => _planningService.CreateRoutine(createRoutineDto);
+        [HttpPost("routines")]
+        public async Task<RoutineDto> CreateRoutineAsync(CreateRoutineDto createRoutineDto)
+            => await _planningService.CreateRoutineAsync(createRoutineDto);
 
         /// <summary>
         /// Complete routine
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpPut("CompleteRoutine")]
-        public DateOnly CompleteRoutine(int id)
-            => _planningService.CompleteRoutine(id);
+        [HttpPut("routines/{id}/complete")]
+        [ProducesResponseType<DateOnly>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<DateOnly> CompleteRoutineAsync(int id)
+            => await _planningService.CompleteRoutineAsync(id);
 
         /// <summary>
         /// Delete routine
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpDelete("DeleteRoutine")]
-        public void DeleteRoutine(int id)
-            => _planningService.DeleteRoutine(id);
+        [HttpDelete("routines/{id}")]
+        public async Task DeleteRoutineAsync(int id)
+            => await _planningService.DeleteRoutineAsync(id);
 
         /// <summary>
         /// Modify routine
         /// </summary>
-        /// <param name="modifyRoutine"></param>
+        /// <param name="modifyRoutineDto"></param>
         /// <returns></returns>
-        [HttpPut("ModifyRoutine")]
-        public RoutineDto ModifyRoutine(ModifyRoutineDto modifyRoutine)
-            => _planningService.ModifyRoutine(modifyRoutine);
+        [HttpPut("routines")]
+        public async Task<RoutineDto> ModifyRoutineAsync(ModifyRoutineDto modifyRoutineDto)
+            => await _planningService.ModifyRoutineAsync(modifyRoutineDto);
 
         /// <summary>
         /// Create a plan
         /// </summary>
         /// <param name="createPlan"></param>
         /// <returns></returns>
-        [HttpPost("CreatePlan")]
-        public PlanDto CreatePlan(CreatePlanDto createPlan)
-            => _planningService.CreatePlan(createPlan);
+        [HttpPost("plans")]
+        public async Task<PlanDto> CreatePlan(CreatePlanDto createPlan)
+            => await _planningService.CreatePlanAsync(createPlan);
 
 
         /// <summary>
         /// Get plans
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetPlans")]
-        public IEnumerable<PlanDto> GetPlans()
-            => _planningService.GetPlans();
+        [HttpGet("plans")]
+        public async Task<IEnumerable<PlanDto>> GetPlansAsync()
+            => await _planningService.GetPlansAsync();
 
 
         /// <summary>
@@ -85,8 +87,8 @@ namespace PlanningAPI.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpDelete("DeletePlan")]
-        public void DeletePlan(int id)
-            => _planningService.DeletePlan(id);
+        [HttpDelete("plan/{id}")]
+        public async Task DeletePlanAsync(int id)
+            => await _planningService.DeletePlanAsync(id);
     }
 }

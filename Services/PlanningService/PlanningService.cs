@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using PlanningAPI.Dtos.PlanDtos;
 using PlanningAPI.Dtos.RoutineDtos;
+using PlanningAPI.Exceptions.PlanningService;
 using PlanningAPI.Models;
 using PlanningAPI.UnitOfWork;
-using System.Numerics;
 
 namespace PlanningAPI.Services.PlanningService
 {
@@ -18,99 +18,97 @@ namespace PlanningAPI.Services.PlanningService
             _mapper = mapper;
         }
 
-        public IEnumerable<RoutineDto> GetAllRoutines()
+        public async Task<IEnumerable<MinimalRoutine>> GetAllRoutinesAsync()
         {
-            var routines = _unitOfWork.RoutineRepository.GetRoutinesIncludingPlans();
-            var routinesDto = _mapper.Map<IEnumerable<Routine>, IEnumerable<RoutineDto>>(routines);
+            var routines = await _unitOfWork.RoutineRepository.GetAllAsync();
+            var routinesDto = _mapper.Map<IEnumerable<Routine>, IEnumerable<MinimalRoutine>>(routines);
 
             return routinesDto;
         }
 
-        public RoutineDto CreateRoutine(CreateRoutineDto createRoutineDto)
+        public async Task<RoutineDto> CreateRoutineAsync(CreateRoutineDto createRoutineDto)
         {
             var routine = _mapper.Map<CreateRoutineDto, Routine>(createRoutineDto);
-            _unitOfWork.RoutineRepository.Add(routine);
-            _unitOfWork.RoutineRepository.SaveChanges();
+            await _unitOfWork.RoutineRepository.AddAsync(routine);
+            await _unitOfWork.RoutineRepository.SaveChangesAsync();
 
             var routineDto = _mapper.Map<RoutineDto>(routine);
             return routineDto;
         }
 
-        public DateOnly CompleteRoutine(int id)
+        public async Task<DateOnly> CompleteRoutineAsync(int id)
         {
-            var routine = _unitOfWork.RoutineRepository.Get(x => x.Id == id);
+            var routine = await _unitOfWork.RoutineRepository.GetAsync(x => x.Id == id);
             if (routine == null)
-                throw new Exception("Routine of given id does not exist.");
+                throw new NotFoundException("Routine of given id does not exist.");
 
             var today = DateOnly.FromDateTime(DateTime.Now);
             routine.LastDone = today;
-            _unitOfWork.RoutineRepository.SaveChanges();
+            await _unitOfWork.RoutineRepository.SaveChangesAsync();
 
             return today;
         }
 
-        public void DeleteRoutine(int id)
+        public async Task DeleteRoutineAsync(int id)
         {
-            var routine = _unitOfWork.RoutineRepository.Get(x => x.Id == id);
+            var routine = await _unitOfWork.RoutineRepository.GetAsync(x => x.Id == id);
             if (routine == null)
-                throw new Exception("Routine of given id does not exist.");
+                throw new NotFoundException("Routine of given id does not exist.");
 
             _unitOfWork.RoutineRepository.Remove(routine);
-            var isDeleted = _unitOfWork.RoutineRepository.SaveChanges();
-            return;
+            await _unitOfWork.RoutineRepository.SaveChangesAsync();
         }
 
-        public RoutineDto ModifyRoutine(ModifyRoutineDto modifyRoutine)
+        public async Task<RoutineDto> ModifyRoutineAsync(ModifyRoutineDto modifyRoutine)
         {
-            var routine = _unitOfWork.RoutineRepository.Get(x => x.Id == modifyRoutine.Id);
+            var routine = await _unitOfWork.RoutineRepository.GetAsync(x => x.Id == modifyRoutine.Id);
             if (routine == null)
-                throw new Exception("Routine of given id does not exist.");
+                throw new NotFoundException("Routine of given id does not exist.");
 
             routine.FrequencyInDays = modifyRoutine.FrequencyInDays;
             routine.Name = modifyRoutine.Name;
             routine.LastDone = DateOnly.Parse(modifyRoutine.LastDone);
 
-            _unitOfWork.RoutineRepository.SaveChanges();
+            await _unitOfWork.RoutineRepository.SaveChangesAsync();
             var routineDto = _mapper.Map<RoutineDto>(routine);
             return routineDto;
         }
 
-        public PlanDto CreatePlan(CreatePlanDto createPlanDto)
+        public async Task<PlanDto> CreatePlanAsync(CreatePlanDto createPlanDto)
         {
             var plan = _mapper.Map<CreatePlanDto, Plan>(createPlanDto);
 
             if (createPlanDto.RoutineId != null)
             {
-                var routine = _unitOfWork.RoutineRepository.Get(x => x.Id == createPlanDto.RoutineId);
+                var routine = await _unitOfWork.RoutineRepository.GetAsync(x => x.Id == createPlanDto.RoutineId);
                 if (routine == null)
-                    throw new Exception("Routine of given id does not exist.");
+                    throw new CreatePlanGivenRoutineNotFound("Routine of given id does not exist.");
                 plan.Routine = routine;
             }
 
-            _unitOfWork.PlanRepository.Add(plan);
-            _unitOfWork.PlanRepository.SaveChanges();
+            await _unitOfWork.PlanRepository.AddAsync(plan);
+            await _unitOfWork.PlanRepository.SaveChangesAsync();
 
             var planDto = _mapper.Map<Plan, PlanDto>(plan);
 
             return planDto;
         }
 
-        public IEnumerable<PlanDto> GetPlans()
+        public async Task<IEnumerable<PlanDto>> GetPlansAsync()
         {
-            var plans = _unitOfWork.PlanRepository.GetPlansIncludingRoutine();
+            var plans = await _unitOfWork.PlanRepository.GetPlansIncludingRoutineAsync();
             var plansDto = _mapper.Map<IEnumerable<Plan>, IEnumerable<PlanDto>>(plans);
             return plansDto;
         }
 
-        public void DeletePlan(int id)
+        public async Task DeletePlanAsync(int id)
         {
             var plan = _unitOfWork.PlanRepository.Get(x => x.Id == id);
             if (plan == null)
-                throw new Exception("Plan of given id does not exist.");
+                throw new NotFoundException("Plan of given id does not exist.");
 
             _unitOfWork.PlanRepository.Remove(plan);
-            _unitOfWork.PlanRepository.SaveChanges();
-            return;
+            await _unitOfWork.PlanRepository.SaveChangesAsync();
         }
     }
 }

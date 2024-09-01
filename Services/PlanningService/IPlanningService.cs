@@ -1,18 +1,17 @@
 ﻿using PlanningAPI.Dtos.PlanDtos;
 using PlanningAPI.Dtos.RoutineDtos;
-using PlanningAPI.Models;
 
 namespace PlanningAPI.Services.PlanningService
 {
     public interface IPlanningService
     {
-        IEnumerable<RoutineDto> GetAllRoutines();
-        RoutineDto CreateRoutine(CreateRoutineDto createRoutineDto);
-        DateOnly CompleteRoutine(int id);
-        void DeleteRoutine(int id);
-        RoutineDto ModifyRoutine(ModifyRoutineDto modifyRoutine);
-        PlanDto CreatePlan(CreatePlanDto createPlan);
-        IEnumerable<PlanDto> GetPlans();
-        void DeletePlan(int id);
+        Task<IEnumerable<MinimalRoutine>> GetAllRoutinesAsync();
+        Task<RoutineDto> CreateRoutineAsync(CreateRoutineDto createRoutineDto);
+        Task<DateOnly> CompleteRoutineAsync(int id);
+        Task DeleteRoutineAsync(int id);
+        Task<RoutineDto> ModifyRoutineAsync(ModifyRoutineDto modifyRoutine);
+        Task<PlanDto> CreatePlanAsync(CreatePlanDto createPlan);
+        Task<IEnumerable<PlanDto>> GetPlansAsync();
+        Task DeletePlanAsync(int id);
     }
 }

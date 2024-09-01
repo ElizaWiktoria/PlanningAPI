@@ -9,12 +9,12 @@ namespace PlanningAPI.Repositories.PlanRepository
         public PlanRepository(DataContextEF dbContext) : base(dbContext)
         {
         }
-        public IEnumerable<Plan> GetPlansIncludingRoutine()
+        public async Task<IEnumerable<Plan>> GetPlansIncludingRoutineAsync()
         {
-            return _dbContext.Plans
+            return await _dbContext.Plans
                 .Include(x => x.Routine)
                 .AsQueryable()
-                .ToList();
+                .ToListAsync();
         }
     }
 }

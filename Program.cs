@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PlanningAPI.AutoMappers;
 using PlanningAPI.DataContext;
+using PlanningAPI.Exceptions;
 using PlanningAPI.Services.PlanningService;
 using PlanningAPI.UnitOfWork;
 
@@ -33,10 +34,13 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddDbContext<DataContextEF>(
-    options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
+    options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection")
+);
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPlanningService, PlanningService>();
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 // Auto Mapper Configurations
 var mapperConfig = new AutoMapperProfile().Configure();
@@ -59,6 +63,8 @@ else
 }
 
 app.UseHttpsRedirection();
+
+app.UseExceptionHandler(_ => { });
 
 app.UseAuthorization();
 
