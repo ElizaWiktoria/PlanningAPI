@@ -21,6 +21,8 @@ namespace PlanningAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("routines")]
+        [ProducesResponseType<IEnumerable<MinimalRoutine>>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IEnumerable<MinimalRoutine>> GetAllRoutinesAsync()
             => await _planningService.GetAllRoutinesAsync();
 
@@ -30,6 +32,8 @@ namespace PlanningAPI.Controllers
         /// <param name="createRoutineDto"></param>
         /// <returns></returns>
         [HttpPost("routines")]
+        [ProducesResponseType<RoutineDto>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<RoutineDto> CreateRoutineAsync(CreateRoutineDto createRoutineDto)
             => await _planningService.CreateRoutineAsync(createRoutineDto);
 
@@ -51,6 +55,9 @@ namespace PlanningAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("routines/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task DeleteRoutineAsync(int id)
             => await _planningService.DeleteRoutineAsync(id);
 
@@ -60,6 +67,9 @@ namespace PlanningAPI.Controllers
         /// <param name="modifyRoutineDto"></param>
         /// <returns></returns>
         [HttpPut("routines")]
+        [ProducesResponseType<RoutineDto>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<RoutineDto> ModifyRoutineAsync(ModifyRoutineDto modifyRoutineDto)
             => await _planningService.ModifyRoutineAsync(modifyRoutineDto);
 
@@ -69,6 +79,8 @@ namespace PlanningAPI.Controllers
         /// <param name="createPlan"></param>
         /// <returns></returns>
         [HttpPost("plans")]
+        [ProducesResponseType<PlanDto>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<PlanDto> CreatePlan(CreatePlanDto createPlan)
             => await _planningService.CreatePlanAsync(createPlan);
 
@@ -78,6 +90,8 @@ namespace PlanningAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("plans")]
+        [ProducesResponseType<IEnumerable<PlanDto>>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IEnumerable<PlanDto>> GetPlansAsync()
             => await _planningService.GetPlansAsync();
 
@@ -88,6 +102,9 @@ namespace PlanningAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("plan/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task DeletePlanAsync(int id)
             => await _planningService.DeletePlanAsync(id);
     }
