@@ -1,20 +1,23 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Planning.Domain.Interfaces.Services;
-using PlanningAPI.Dtos.PlanDtos;
+using Planning.Application.Features.Routines.Command.CompleteRoutine;
+using Planning.Application.Features.Routines.Command.CreateRoutine;
+using Planning.Application.Features.Routines.Command.DeleteRoutine;
+using Planning.Application.Features.Routines.Command.ModifyRoutine;
+using Planning.Application.Features.Routines.Queries.GetAllRoutines;
 using PlanningAPI.Dtos.RoutineDtos;
 
 namespace PlanningAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PlanningController : ControllerBase
+    public class RoutineController : ControllerBase
     {
-        private readonly IPlanningService _planningService;
+        private readonly IMediator _mediator;
 
-        public PlanningController(IPlanningService routineService)
+        public RoutineController(IMediator mediator)
         {
-            _planningService = routineService;
+            _mediator = mediator;
         }
 
         /// <summary>
@@ -25,7 +28,7 @@ namespace PlanningAPI.Controllers
         [ProducesResponseType<IEnumerable<MinimalRoutine>>(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IEnumerable<MinimalRoutine>> GetAllRoutinesAsync()
-            => await _planningService.GetAllRoutinesAsync();
+            => await _mediator.Send(new GetAllRoutinesQuery { });
 
         /// <summary>
         /// Create routine
@@ -36,7 +39,7 @@ namespace PlanningAPI.Controllers
         [ProducesResponseType<RoutineDto>(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<RoutineDto> CreateRoutineAsync(CreateRoutineDto createRoutineDto)
-            => await _planningService.CreateRoutineAsync(createRoutineDto);
+            => await _mediator.Send(new CreateRoutineCommand { CreateRoutineDto = createRoutineDto });
 
         /// <summary>
         /// Complete routine
@@ -48,7 +51,7 @@ namespace PlanningAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<DateOnly> CompleteRoutineAsync(int id)
-            => await _planningService.CompleteRoutineAsync(id);
+            => await _mediator.Send(new CompleteRoutineCommand { Id = id });
 
         /// <summary>
         /// Delete routine
@@ -60,7 +63,7 @@ namespace PlanningAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task DeleteRoutineAsync(int id)
-            => await _planningService.DeleteRoutineAsync(id);
+            => await _mediator.Send(new DeleteRoutineCommand { Id = id });
 
         /// <summary>
         /// Modify routine
@@ -72,41 +75,6 @@ namespace PlanningAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<RoutineDto> ModifyRoutineAsync(ModifyRoutineDto modifyRoutineDto)
-            => await _planningService.ModifyRoutineAsync(modifyRoutineDto);
-
-        /// <summary>
-        /// Create a plan
-        /// </summary>
-        /// <param name="createPlan"></param>
-        /// <returns></returns>
-        [HttpPost("plans")]
-        [ProducesResponseType<PlanDto>(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<PlanDto> CreatePlan(CreatePlanDto createPlan)
-            => await _planningService.CreatePlanAsync(createPlan);
-
-
-        /// <summary>
-        /// Get plans
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("plans")]
-        [ProducesResponseType<IEnumerable<PlanDto>>(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IEnumerable<PlanDto>> GetPlansAsync()
-            => await _planningService.GetPlansAsync();
-
-
-        /// <summary>
-        /// Delete routine
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpDelete("plan/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task DeletePlanAsync(int id)
-            => await _planningService.DeletePlanAsync(id);
+            => await _mediator.Send(new ModifyRoutineCommand { ModifyRoutineDto = modifyRoutineDto });
     }
 }

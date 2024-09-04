@@ -1,20 +1,11 @@
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Planning.Domain.Interfaces.Repository;
-using Planning.Domain.Interfaces.Services;
-using Planning.Domain.Services;
-using Planning.Infrastructure.Repositories;
-using PlanningAPI.AutoMappers;
-using PlanningAPI.DataContext;
-using PlanningAPI.Exceptions;
-using PlanningAPI.UnitOfWork;
+using PlanningApi.Startup;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+ServiceRegistration.Register(builder.Services);
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -35,22 +26,6 @@ builder.Services.AddCors(options =>
                     .AllowCredentials();
     });
 });
-
-builder.Services.AddDbContext<DataContextEF>(
-    options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection")
-);
-
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IPlanningService, PlanningService>();
-builder.Services.AddScoped<IPlanRepository, PlanRepository>();
-builder.Services.AddScoped<IRoutineRepository, RoutineRepository>();
-
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-
-// Auto Mapper Configurations
-var mapperConfig = new AutoMapperProfile().Configure();
-IMapper mapper = mapperConfig.CreateMapper();
-builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
 

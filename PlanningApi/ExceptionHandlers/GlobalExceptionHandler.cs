@@ -25,7 +25,7 @@ namespace PlanningAPI.Exceptions
                 };
                 //_logger.LogError(exception, "An unexpected error occurred.");
             }
-            else if (exception is CreatePlanGivenRoutineNotFound)
+            else if (exception is IllegalArgumentException)
             {
                 problemDetails = new ProblemDetails
                 {
