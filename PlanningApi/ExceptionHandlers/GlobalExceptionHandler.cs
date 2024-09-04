@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using PlanningAPI.Exceptions.PlanningService;
 
@@ -23,9 +24,10 @@ namespace PlanningAPI.Exceptions
                     Title = "An error occurred while processing your request.",
                     Detail = exception.Message
                 };
+                httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
                 //_logger.LogError(exception, "An unexpected error occurred.");
             }
-            else if (exception is IllegalArgumentException)
+            else if (exception is IllegalArgumentException || exception is ValidationException)
             {
                 problemDetails = new ProblemDetails
                 {
@@ -33,6 +35,7 @@ namespace PlanningAPI.Exceptions
                     Title = "An error occurred while processing your request.",
                     Detail = exception.Message
                 };
+                httpContext.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
                 //_logger.LogError(exception, "An unexpected error occurred.");
             }
             else
@@ -43,10 +46,10 @@ namespace PlanningAPI.Exceptions
                     Title = "An error occurred while processing your request.",
                     Detail = exception.Message
                 };
+                httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 //_logger.LogError(exception, "An unexpected error occurred.");
             }
 
-            httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
             httpContext.Response.ContentType = "application/problem+json";
             await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
 

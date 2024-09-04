@@ -25,7 +25,7 @@ namespace PlanningAPI.Controllers
         /// <returns></returns>
         [HttpPost("plans")]
         [ProducesResponseType<PlanDto>(StatusCodes.Status200OK)]
-        [ProducesResponseType<PlanDto>(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<PlanDto> CreatePlanAsync(CreatePlanDto createPlanDto)
             => await _mediator.Send(new CreatePlanCommand { CreatePlanDto = createPlanDto });

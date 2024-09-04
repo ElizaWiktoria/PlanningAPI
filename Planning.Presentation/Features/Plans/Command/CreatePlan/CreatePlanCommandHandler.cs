@@ -25,7 +25,7 @@ namespace Planning.Application.Features.Plans.Command.CreatePlan
             {
                 var routine = await _unitOfWork.RoutineRepository.GetAsync(x => x.Id == request.CreatePlanDto.RoutineId);
                 if (routine == null)
-                    throw new IllegalArgumentException("Routine of given id does not exist.");//todo illegal argument exception
+                    throw new IllegalArgumentException("Routine of given id does not exist.");
                 plan.Routine = routine;
             }
 
