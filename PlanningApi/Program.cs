@@ -1,4 +1,6 @@
+using Planning.Application.Middleware;
 using PlanningApi.Startup;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +29,19 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+
+builder.Logging.ClearProviders(); // Clear default logging providers
+builder.Logging.AddSerilog(); // Add Serilog to logging pipeline
+
 var app = builder.Build();
+
+app.UseMiddleware<RequestLoggingMiddleware>();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -41,6 +55,8 @@ else
     app.UseCors("");
     app.UseHttpsRedirection();
 }
+
+//app.UseHttpLogging();
 
 app.UseHttpsRedirection();
 

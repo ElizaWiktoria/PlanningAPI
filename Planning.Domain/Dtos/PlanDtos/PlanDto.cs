@@ -1,7 +1,6 @@
-﻿
-using PlanningAPI.Dtos.RoutineDtos;
+﻿using Planning.Domain.Dtos.RoutineDtos;
 
-namespace PlanningAPI.Dtos.PlanDtos
+namespace Planning.Domain.Dtos.PlanDtos
 {
     public class PlanDto
     {

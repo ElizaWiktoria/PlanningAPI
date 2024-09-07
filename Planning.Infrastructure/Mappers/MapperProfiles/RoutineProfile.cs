@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using PlanningAPI.Dtos.RoutineDtos;
-using PlanningAPI.Models;
+using Planning.Domain.Dtos.RoutineDtos;
+using Planning.Domain.Models;
 
-namespace PlanningAPI.AutoMappers.Profiles
+namespace Planning.Infrastructure.AutoMappers.AutoMappers.Profiles
 {
     public class RoutineProfile : Profile
     {

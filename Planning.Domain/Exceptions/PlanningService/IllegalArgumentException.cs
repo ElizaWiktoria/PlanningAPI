@@ -1,4 +1,4 @@
-﻿namespace PlanningAPI.Exceptions.PlanningService
+﻿namespace Planning.Domain.Exceptions.PlanningService
 {
     public class IllegalArgumentException : Exception
     {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PlanningAPI.EntityTypeConfigurations;
-using PlanningAPI.Models;
+using Planning.Domain.Models;
+using Planning.Infrastructure.AutoMappers.EntityTypeConfigurations;
 
-namespace PlanningAPI.DataContext
+namespace Planning.Infrastructure.AutoMappers.DataContext
 {
     public sealed class DataContextEF : DbContext
     {

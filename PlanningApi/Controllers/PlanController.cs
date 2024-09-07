@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Planning.Application.Features.Plans.Command.CreatePlan;
 using Planning.Application.Features.Plans.Command.DeletePlan;
 using Planning.Application.Features.Plans.Queries.GetPlans;
-using PlanningAPI.Dtos.PlanDtos;
+using Planning.Domain.Dtos.PlanDtos;
 
 namespace PlanningAPI.Controllers
 {

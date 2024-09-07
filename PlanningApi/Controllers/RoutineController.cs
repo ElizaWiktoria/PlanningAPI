@@ -5,7 +5,7 @@ using Planning.Application.Features.Routines.Command.CreateRoutine;
 using Planning.Application.Features.Routines.Command.DeleteRoutine;
 using Planning.Application.Features.Routines.Command.ModifyRoutine;
 using Planning.Application.Features.Routines.Queries.GetAllRoutines;
-using PlanningAPI.Dtos.RoutineDtos;
+using Planning.Domain.Dtos.RoutineDtos;
 
 namespace PlanningAPI.Controllers
 {

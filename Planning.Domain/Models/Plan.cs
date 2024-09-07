@@ -1,4 +1,4 @@
-﻿namespace PlanningAPI.Models
+﻿namespace Planning.Domain.Models
 {
     public class Plan
     {

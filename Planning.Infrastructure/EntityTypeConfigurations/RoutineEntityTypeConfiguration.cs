@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
-using PlanningAPI.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Planning.Domain.Models;
 
-namespace PlanningAPI.EntityTypeConfigurations
+namespace Planning.Infrastructure.AutoMappers.EntityTypeConfigurations
 {
     public class RoutineEntityTypeConfiguration : IEntityTypeConfiguration<Routine>
     {

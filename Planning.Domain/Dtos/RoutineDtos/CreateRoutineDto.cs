@@ -1,4 +1,4 @@
-﻿namespace PlanningAPI.Dtos.RoutineDtos
+﻿namespace Planning.Domain.Dtos.RoutineDtos
 {
     public class CreateRoutineDto
     {

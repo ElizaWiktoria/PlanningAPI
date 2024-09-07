@@ -1,4 +1,4 @@
-﻿namespace PlanningAPI.Dtos.PlanDtos
+﻿namespace Planning.Domain.Dtos.PlanDtos
 {
     public class MinimalPlan
     {

@@ -1,6 +1,6 @@
 ﻿using Planning.Domain.Interfaces.Repository;
 
-namespace PlanningAPI.UnitOfWork
+namespace Planning.Domain.UnitOfWork
 {
     public interface IUnitOfWork
     {

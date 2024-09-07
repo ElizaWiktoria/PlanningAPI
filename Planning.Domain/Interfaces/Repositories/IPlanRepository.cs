@@ -1,4 +1,4 @@
-﻿using PlanningAPI.Models;
+﻿using Planning.Domain.Models;
 
 namespace Planning.Domain.Interfaces.Repository
 {

@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Planning.Domain.Interfaces.Repository;
-using PlanningAPI.DataContext;
-using PlanningAPI.Models;
-using PlanningAPI.Repositories;
+using Planning.Domain.Models;
+using Planning.Infrastructure.AutoMappers.DataContext;
 
 namespace Planning.Infrastructure.Repositories
 {

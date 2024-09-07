@@ -13,11 +13,12 @@ using Planning.Application.Features.Routines.Queries.GetAllRoutines;
 using Planning.Application.PipelineBehaviors;
 using Planning.Application.Validators;
 using Planning.Domain.Interfaces.Repository;
+using Planning.Domain.UnitOfWork;
+using Planning.Infrastructure.AutoMappers;
+using Planning.Infrastructure.AutoMappers.DataContext;
 using Planning.Infrastructure.Repositories;
-using PlanningAPI.AutoMappers;
-using PlanningAPI.DataContext;
-using PlanningAPI.Exceptions;
-using PlanningAPI.UnitOfWork;
+using Planning.Infrastructure.UnitOfWork;
+using PlanningAPI.ExceptionHandlers;
 using System.Reflection;
 
 namespace PlanningApi.Startup
@@ -53,6 +54,8 @@ namespace PlanningApi.Startup
             services.AddValidatorsFromAssembly(typeof(ModifyRoutineCommandValidator).Assembly);
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+            //services.AddHttpLogging(o => { });
 
             //services
             services.AddScoped<IUnitOfWork, UnitOfWork>();

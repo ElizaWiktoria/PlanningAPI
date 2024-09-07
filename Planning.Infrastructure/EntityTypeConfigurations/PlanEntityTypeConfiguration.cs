@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PlanningAPI.Models;
+using Planning.Domain.Models;
 
-namespace PlanningAPI.EntityTypeConfigurations
+namespace Planning.Infrastructure.AutoMappers.EntityTypeConfigurations
 {
     public class PlanEntityTypeConfiguration : IEntityTypeConfiguration<Plan>
     {

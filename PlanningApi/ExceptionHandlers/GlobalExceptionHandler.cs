@@ -1,18 +1,19 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using PlanningAPI.Exceptions.PlanningService;
+using Planning.Domain.Exceptions.PlanningService;
 
-namespace PlanningAPI.Exceptions
+namespace PlanningAPI.ExceptionHandlers
 {
     public class GlobalExceptionHandler : IExceptionHandler
     {
-        //private readonly ILogger<MyExceptionHandler> _logger;
+        private readonly ILogger<GlobalExceptionHandler> _logger;
 
-        //public GlobalExceptionHandler(ILogger<MyExceptionHandler> logger)
-        //{
-        //    _logger = logger;
-        //}
+        public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
+        {
+            _logger = logger;
+        }
+
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
             ProblemDetails problemDetails;
@@ -25,7 +26,6 @@ namespace PlanningAPI.Exceptions
                     Detail = exception.Message
                 };
                 httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-                //_logger.LogError(exception, "An unexpected error occurred.");
             }
             else if (exception is IllegalArgumentException || exception is ValidationException)
             {
@@ -36,7 +36,6 @@ namespace PlanningAPI.Exceptions
                     Detail = exception.Message
                 };
                 httpContext.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
-                //_logger.LogError(exception, "An unexpected error occurred.");
             }
             else
             {
@@ -47,9 +46,9 @@ namespace PlanningAPI.Exceptions
                     Detail = exception.Message
                 };
                 httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                //_logger.LogError(exception, "An unexpected error occurred.");
             }
 
+            _logger.LogError(exception.Message);
             httpContext.Response.ContentType = "application/problem+json";
             await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
 

@@ -1,4 +1,6 @@
-﻿namespace PlanningAPI.Models
+﻿using Planning.Domain.Models;
+
+namespace Planning.Domain.Models
 {
     public class Routine
     {

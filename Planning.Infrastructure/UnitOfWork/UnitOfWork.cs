@@ -1,7 +1,8 @@
 ﻿using Planning.Domain.Interfaces.Repository;
-using PlanningAPI.DataContext;
+using Planning.Domain.UnitOfWork;
+using Planning.Infrastructure.AutoMappers.DataContext;
 
-namespace PlanningAPI.UnitOfWork
+namespace Planning.Infrastructure.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {

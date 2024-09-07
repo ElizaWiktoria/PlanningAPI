@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Planning.Domain.Interfaces.Repository;
-using PlanningAPI.DataContext;
+using Planning.Infrastructure.AutoMappers.DataContext;
 using System.Linq.Expressions;
 
-namespace PlanningAPI.Repositories
+namespace Planning.Infrastructure.Repositories
 {
     public abstract class GenericRepository<T> : IGenericRepository<T>
         where T : class

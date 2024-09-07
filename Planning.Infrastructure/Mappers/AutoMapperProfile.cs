@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using PlanningAPI.AutoMappers.Profiles;
+using Planning.Infrastructure.AutoMappers.AutoMappers.Profiles;
 
-namespace PlanningAPI.AutoMappers
+namespace Planning.Infrastructure.AutoMappers
 {
     public class AutoMapperProfile
     {
