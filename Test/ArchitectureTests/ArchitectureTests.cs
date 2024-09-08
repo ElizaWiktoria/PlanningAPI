@@ -1,11 +1,11 @@
 ﻿using NetArchTest.Rules;
 
-namespace Test
+namespace Test.ArchitectureTests
 {
     [TestClass]
     public class ArchitectureTests
     {
-        private const string DomainNamespace = "Planning.Doman";
+        private const string DomainNamespace = "Planning.Domain";
         private const string ApplicationNamespace = "Planning.Application";
         private const string InfrastructureNamespace = "Planning.Infrastructure";
         private const string ApiNamespace = "PlanningApi";
@@ -94,6 +94,26 @@ namespace Test
                 .HaveNameEndingWith("Handler")
                 .Should()
                 .HaveDependencyOn(DomainNamespace)
+                .GetResult();
+
+            // Assert
+            Assert.IsTrue(testResult.IsSuccessful);
+        }
+
+
+        [TestMethod]
+        public void Controllers_Should_HaveDependencyOnMediatr()
+        {
+            // Arrange
+            var assembly = typeof(PlanningApi.AssemblyReference).Assembly;
+
+            // Act
+            var testResult = Types
+                .InAssembly(assembly)
+                .That()
+                .HaveNameEndingWith("Controller")
+                .Should()
+                .HaveDependencyOn("MediatR")
                 .GetResult();
 
             // Assert
