@@ -15,7 +15,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("DevCors", corsBuilder =>
     {
-        corsBuilder.WithOrigins("http://localhost:3000")
+        corsBuilder.WithOrigins("http://localhost:5001")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials();
@@ -42,18 +42,18 @@ var app = builder.Build();
 
 app.UseMiddleware<RequestLoggingMiddleware>();
 
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
+{
+   app.UseCors("DevCors");
+   app.UseSwagger();
+   app.UseSwaggerUI();
+}
+else
 {
     app.UseCors("DevCors");
     app.UseSwagger();
     app.UseSwaggerUI();
-}
-else
-{
-    app.UseCors("");
-    app.UseHttpsRedirection();
 }
 
 //app.UseHttpLogging();

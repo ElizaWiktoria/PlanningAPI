@@ -1,0 +1,23 @@
+services:
+
+  sqldata:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - SA_PASSWORD=str0ngPassword
+      - ACCEPT_EULA=Y
+    hostname: sql1
+    ports:
+      - "1433:1433"
+    volumes:
+      - db-data:/var/opt/mssql
+
+  planningapi:
+    image: planning-api:1.0
+    ports:
+      - "5001:8080"
+    depends_on:
+      - sqldata
+
+volumes:
+  db-data:
+    driver: local

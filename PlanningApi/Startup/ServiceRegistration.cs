@@ -29,7 +29,9 @@ namespace PlanningApi.Startup
         {
             // database
             services.AddDbContext<DataContextEF>(
-                options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection")
+                options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection",
+                    builder => builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)
+                )
             );
 
             // cqrs handlers
